@@ -1,0 +1,454 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+
+    <title>بلاگ تخصصی | دکتر زهره منصوری | مشاور تحصیلی برتر ایران</title>
+    <meta name="description" content="مقالات تخصصی مشاوره تحصیلی، برنامه‌ریزی کنکور، مدیریت استرس و تکنیک‌های مطالعه توسط دکتر زهره منصوری">
+    <meta name="keywords" content="مشاوره تحصیلی, بلاگ کنکور, برنامه‌ریزی درسی, دکتر زهره منصوری">
+    <meta name="theme-color" content="#0A0A1F">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        /* ===== BLOG PAGE STYLES ===== */
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #0A0A1F;
+            color: white;
+            line-height: 1.8;
+            cursor: default;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            background: rgba(10, 10, 31, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #C41E3A, #D4AF37);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: white;
+            transform: rotate(10deg);
+        }
+
+        .logo-text-main {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .logo-text-sub {
+            font-size: 0.7rem;
+            color: #D4AF37;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: white;
+        }
+
+        .nav-links a.active {
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 3px;
+        }
+
+        .btn-luxury {
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(135deg, #C41E3A, #D4AF37);
+            border-radius: 50px;
+            color: white !important;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Blog Hero */
+        .blog-hero {
+            padding: 8rem 2rem 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, #0A0A1F 0%, #050510 100%);
+        }
+
+        .blog-hero-title {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, #C41E3A, #D4AF37, #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .blog-hero-description {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2.5rem;
+        }
+
+        /* Categories */
+        .blog-categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 2rem 0;
+        }
+
+        .blog-category-btn {
+            padding: 0.6rem 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 50px;
+            color: rgba(255,255,255,0.8);
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .blog-category-btn:hover, .blog-category-btn.active {
+            background: linear-gradient(135deg, #C41E3A, #D4AF37);
+            border-color: transparent;
+            color: white;
+        }
+
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .blog-card {
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            border-color: #D4AF37;
+            box-shadow: 0 20px 40px -10px rgba(212, 175, 55, 0.2);
+        }
+
+        .blog-card-image {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+        }
+
+        .blog-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-card-image img {
+            transform: scale(1.1);
+        }
+
+        .blog-card-category {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 1.2rem;
+            background: linear-gradient(135deg, #C41E3A, #D4AF37);
+            border-radius: 50px;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .blog-card-content {
+            padding: 1.5rem;
+        }
+
+        .blog-card-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .blog-card-meta i {
+            color: #D4AF37;
+            margin-left: 0.3rem;
+        }
+
+        .blog-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .blog-card-title a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .blog-card-title a:hover {
+            color: #D4AF37;
+        }
+
+        .blog-card-excerpt {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-card-link {
+            color: #D4AF37;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s;
+        }
+
+        .blog-card-link:hover {
+            gap: 1rem;
+        }
+
+        /* Pagination */
+        .blog-pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 3rem 0;
+        }
+
+        .pagination-btn {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .pagination-btn:hover, .pagination-btn.active {
+            background: linear-gradient(135deg, #C41E3A, #D4AF37);
+            border-color: transparent;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: rgba(255,255,255,0.5);
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+
+        .footer {
+            padding: 2rem 0;
+            background: #050510;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .blog-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'core:home' %}" class="logo">
+                <div class="logo-icon">ZM</div>
+                <div>
+                    <div class="logo-text-main">دکتر زهره منصوری</div>
+                    <div class="logo-text-sub">مشاور برتر ایران</div>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="{% url 'core:home' %}">خانه</a>
+                <a href="{% url 'core:home' %}#about">درباره من</a>
+                <a href="{% url 'core:home' %}#services">خدمات</a>
+                <a href="{% url 'core:home' %}#achievements">افتخارات</a>
+                <a href="{% url 'blog:post_list' %}" class="active">بلاگ</a>
+                <a href="{% url 'core:home' %}#contact">تماس</a>
+                <a href="{% url 'core:home' %}#contact" class="btn-luxury">مشاوره رایگان</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="padding-top: 80px;">
+        <!-- Blog Hero -->
+        <section class="blog-hero">
+            <h1 class="blog-hero-title">بلاگ تخصصی</h1>
+            <p class="blog-hero-description">آخرین مقالات و نکات طلایی برای موفقیت تحصیلی</p>
+        </section>
+
+        <!-- Categories -->
+        <div class="container">
+            <div class="blog-categories">
+                <a href="{% url 'blog:post_list' %}" class="blog-category-btn {% if not current_category %}active{% endif %}">همه</a>
+                {% for cat in categories %}
+                    <a href="{% url 'blog:post_by_category' cat.slug %}"
+                       class="blog-category-btn {% if current_category == cat %}active{% endif %}">
+                        {% if cat.icon %}<i class="fas {{ cat.icon }}"></i> {% endif %}{{ cat.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Articles Grid -->
+        <div class="container">
+            <div class="blog-grid">
+                {% for post in posts %}
+                    <article class="blog-card">
+                        <div class="blog-card-image">
+                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
+                            <span class="blog-card-category">{{ post.category.name }}</span>
+                        </div>
+                        <div class="blog-card-content">
+                            <div class="blog-card-meta">
+                                <span><i class="far fa-calendar-alt"></i> {{ post.published_at|date:"j F Y" }}</span>
+                                <span><i class="far fa-eye"></i> {{ post.views_count }} بازدید</span>
+                                {% if post.post_type == 'video' %}
+                                    <span><i class="fas fa-play-circle"></i> {{ post.video_views_count }} ویو</span>
+                                {% endif %}
+                            </div>
+                            <h3 class="blog-card-title">
+                                <a href="{% url 'blog:post_detail' post.slug %}">{{ post.title }}</a>
+                            </h3>
+                            <p class="blog-card-excerpt">{{ post.excerpt|truncatewords:25 }}</p>
+                            <a href="{% url 'blog:post_detail' post.slug %}" class="blog-card-link">
+                                ادامه مطلب <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </article>
+                {% empty %}
+                    <div class="no-results">
+                        <i class="fas fa-pen-fancy" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                        <h3>هنوز مقاله‌ای منتشر نشده</h3>
+                        <p>به زودی مقالات ارزشمندی در این بخش قرار خواهد گرفت.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="blog-pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            {% endif %}
+
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <span class="pagination-btn active">{{ i }}</span>
+                {% else %}
+                    <a href="?page={{ i }}" class="pagination-btn">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>تمامی حقوق برای دکتر زهره منصوری محفوظ است © ۱۴۰۳</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; background: linear-gradient(135deg, #C41E3A, #D4AF37); border: none; border-radius: 50%; color: white; font-size: 1.2rem; cursor: pointer; z-index: 100;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({duration: 800, once: true});</script>
+</body>
+</html>

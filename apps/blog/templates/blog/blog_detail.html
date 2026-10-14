@@ -1,0 +1,687 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+
+    <title>{{ post.title }} | بلاگ دکتر زهره منصوری</title>
+    <meta name="description" content="{% if post.meta_description %}{{ post.meta_description }}{% else %}{{ post.excerpt|truncatewords:30 }}{% endif %}">
+    <meta name="keywords" content="{% if post.meta_keywords %}{{ post.meta_keywords }}{% else %}مشاوره تحصیلی, دکتر زهره منصوری{% endif %}">
+    <meta name="theme-color" content="#0A0A1F">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #0A0A1F;
+            color: white;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            background: rgba(10, 10, 31, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, #C41E3A, #D4AF37);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: white;
+            transform: rotate(10deg);
+        }
+
+        .logo-text-main {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .logo-text-sub {
+            font-size: 0.7rem;
+            color: #D4AF37;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: white;
+        }
+
+        .nav-links a.active {
+            border-bottom: 2px solid #D4AF37;
+            padding-bottom: 3px;
+        }
+
+        .btn-luxury {
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(135deg, #C41E3A, #D4AF37);
+            border-radius: 50px;
+            color: white !important;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn-luxury:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Single Post */
+        .single-post {
+            padding: 120px 0 60px;
+        }
+
+        .post-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .post-category {
+            display: inline-block;
+            padding: 0.4rem 1.5rem;
+            background: linear-gradient(135deg, #C41E3A, #D4AF37);
+            border-radius: 50px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-decoration: none;
+        }
+
+        .post-title {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 800;
+            margin: 1rem 0;
+            line-height: 1.3;
+            background: linear-gradient(135deg, #C41E3A, #D4AF37, #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .post-meta i {
+            color: #D4AF37;
+            margin-left: 0.3rem;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            margin: 1.5rem 0;
+        }
+
+        .post-tag {
+            padding: 0.3rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50px;
+            color: #D4AF37;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .post-tag:hover {
+            background: #D4AF37;
+            color: #0A0A1F;
+        }
+
+        .post-featured-image {
+            margin: 2rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .post-featured-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Video Section */
+        .post-video {
+            margin: 2rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .post-video video {
+            width: 100%;
+            display: block;
+        }
+
+        .post-video iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+        }
+
+        .post-content {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+
+        .post-content h1, .post-content h2 {
+            color: white;
+            font-size: 1.8rem;
+            margin: 2.5rem 0 1.5rem;
+            font-weight: 700;
+        }
+
+        .post-content h3 {
+            color: #D4AF37;
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .post-content ul, .post-content ol {
+            margin: 1.5rem 0;
+            padding-right: 2rem;
+        }
+
+        .post-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        .post-content blockquote {
+            background: rgba(212, 175, 55, 0.1);
+            border-right: 4px solid #D4AF37;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        /* Share Section */
+        .post-share {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin: 2rem 0;
+        }
+
+        .post-share span {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .share-btn {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .share-btn:hover {
+            background: #D4AF37;
+            transform: translateY(-3px);
+        }
+
+        /* CTA */
+        .post-cta {
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.1), rgba(212, 175, 55, 0.1));
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            margin: 3rem 0;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .post-cta h3 {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .post-cta p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .post-cta .btn-luxury {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Related Posts */
+        .related-posts {
+            margin: 3rem 0;
+        }
+
+        .related-posts h3 {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .related-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 15px;
+            overflow: hidden;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            border-color: #D4AF37;
+        }
+
+        .related-card img {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+        }
+
+        .related-card h4 {
+            padding: 1rem;
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* Comments */
+        .comments-section {
+            margin: 4rem 0;
+        }
+
+        .comments-section h3 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .comment-form {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(10, 10, 31, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Vazirmatn', sans-serif;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: #D4AF37;
+        }
+
+        .comment-form button {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #C41E3A, #D4AF37);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .comment-form button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.3);
+        }
+
+        .comment-list {
+            list-style: none;
+        }
+
+        .comment-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .comment-item h5 {
+            color: #D4AF37;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-item p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95rem;
+        }
+
+        .comment-item small {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+        }
+
+        .footer {
+            padding: 2rem 0;
+            background: #050510;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .post-meta { flex-direction: column; gap: 0.5rem; }
+            .related-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'core:home' %}" class="logo">
+                <div class="logo-icon">ZM</div>
+                <div>
+                    <div class="logo-text-main">دکتر زهره منصوری</div>
+                    <div class="logo-text-sub">مشاور برتر ایران</div>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="{% url 'core:home' %}">خانه</a>
+                <a href="{% url 'core:home' %}#about">درباره من</a>
+                <a href="{% url 'core:home' %}#services">خدمات</a>
+                <a href="{% url 'blog:post_list' %}" class="active">بلاگ</a>
+                <a href="{% url 'core:home' %}#contact" class="btn-luxury">مشاوره رایگان</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <article class="single-post">
+            <div class="container">
+                <!-- Header -->
+                <header class="post-header">
+                    <a href="{% url 'blog:post_by_category' post.category.slug %}" class="post-category">
+                        {{ post.category.name }}
+                    </a>
+                    <h1 class="post-title">{{ post.title }}</h1>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar-alt"></i> {{ post.published_at|date:"j F Y" }}</span>
+                        <span><i class="far fa-clock"></i> {{ post.content|length|default:0 }} کاراکتر</span>
+                        <span><i class="far fa-eye"></i> {{ post.views_count }} بازدید</span>
+                        {% if post.post_type == 'video' %}
+                            <span><i class="fas fa-play-circle"></i> {{ post.video_views_count }} ویو ویدیو</span>
+                        {% endif %}
+                    </div>
+
+                    {% if post.tags.all %}
+                    <div class="post-tags">
+                        {% for tag in post.tags.all %}
+                            <a href="{% url 'blog:post_by_tag' tag.slug %}" class="post-tag">#{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </header>
+
+                <!-- Featured Image -->
+                <div class="post-featured-image">
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+                </div>
+
+                <!-- Video (if exists) -->
+                {% if post.video_url or post.video_file %}
+                <div class="post-video">
+                    {% if post.video_file %}
+                        <video controls>
+                            <source src="{{ post.video_file.url }}" type="video/mp4">
+                            مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                        </video>
+                    {% elif post.video_url %}
+                        <iframe src="{{ post.video_url }}" frameborder="0" allowfullscreen></iframe>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Content -->
+                <div class="post-content">
+                    {{ post.content|safe }}
+                </div>
+
+                <!-- Share -->
+                <div class="post-share">
+                    <span>اشتراک‌گذاری:</span>
+                    <div class="share-buttons">
+                        <button class="share-btn" onclick="sharePost('telegram')"><i class="fab fa-telegram"></i></button>
+                        <button class="share-btn" onclick="sharePost('whatsapp')"><i class="fab fa-whatsapp"></i></button>
+                        <button class="share-btn" onclick="copyLink()"><i class="fas fa-link"></i></button>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="post-cta">
+                    <h3>آماده‌اید برای موفقیت؟</h3>
+                    <p>همین حالا اولین جلسه مشاوره رایگان را رزرو کنید</p>
+                    <a href="{% url 'core:home' %}#contact" class="btn-luxury">
+                        رزرو مشاوره رایگان <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+
+                <!-- Comments -->
+                <div class="comments-section">
+                    <h3><i class="fas fa-comments"></i> نظرات ({{ comments.count }})</h3>
+
+                    <!-- Comment Form -->
+                    <form class="comment-form" id="commentForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="post_id" value="{{ post.id }}">
+                        <input type="text" name="name" placeholder="نام شما" required>
+                        <input type="email" name="email" placeholder="ایمیل شما" required>
+                        <textarea name="comment" rows="4" placeholder="نظر خود را بنویسید..." required></textarea>
+                        <button type="submit">ثبت نظر</button>
+                    </form>
+
+                    <!-- Comments List -->
+                    {% if comments %}
+                    <ul class="comment-list">
+                        {% for comment in comments %}
+                        <li class="comment-item">
+                            <h5><i class="fas fa-user-circle"></i> {{ comment.name }}</h5>
+                            <p>{{ comment.text }}</p>
+                            <small>{{ comment.created_at|date:"j F Y - H:i" }}</small>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p style="color: rgba(255,255,255,0.5);">هنوز نظری ثبت نشده. اولین نفر باشید!</p>
+                    {% endif %}
+                </div>
+
+                <!-- Related Posts -->
+                {% if related_posts %}
+                <div class="related-posts">
+                    <h3>مقالات مرتبط</h3>
+                    <div class="related-grid">
+                        {% for related in related_posts %}
+                        <a href="{% url 'blog:post_detail' related.slug %}" class="related-card">
+                            <img src="{{ related.featured_image.url }}" alt="{{ related.title }}">
+                            <h4>{{ related.title }}</h4>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>تمامی حقوق برای دکتر زهره منصوری محفوظ است © ۱۴۰۳</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+            style="position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px;
+                   background: linear-gradient(135deg, #C41E3A, #D4AF37); border: none;
+                   border-radius: 50%; color: white; font-size: 1.2rem; cursor: pointer; z-index: 100;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Share functions
+        function sharePost(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            let shareUrl = '';
+
+            if (platform === 'telegram') shareUrl = `https://t.me/share/url?url=${url}&text=${title}`;
+            else if (platform === 'whatsapp') shareUrl = `https://wa.me/?text=${title}%20${url}`;
+
+            if (shareUrl) window.open(shareUrl, '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert('✅ لینک مقاله کپی شد!'));
+        }
+
+        // Comment form
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const btn = this.querySelector('button');
+            const originalText = btn.textContent;
+
+            btn.textContent = 'در حال ارسال...';
+            btn.disabled = true;
+
+            fetch('{% url "comments:submit_comment" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    this.reset();
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    alert('❌ ' + (data.message || 'خطایی رخ داد'));
+                }
+            })
+            .catch(() => alert('❌ خطا در ارتباط با سرور'))
+            .finally(() => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
